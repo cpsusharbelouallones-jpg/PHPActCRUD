@@ -1,15 +1,19 @@
 <?php
 include 'db_connect.php';
 
-$first_name = $_POST['first_name'];
-$last_name  = $_POST['last_name'];
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-$sql = "INSERT INTO students (first_name, last_name)
-        VALUES ('$first_name', '$last_name')";
+if (!empty($_POST['id'])) {
+  $id = intval($_POST['id']);
+  $sql = "UPDATE students SET username='$username', password='$password' WHERE id=$id";
+} else {
+  $sql = "INSERT INTO students (username, password)
+        VALUES ('$username', '$password')";
+}
 
 if (mysqli_query($conn, $sql)) {
-    return header("Location: index.php" . "?success=1");
+  return header("Location: index.php" . "?success=1");
 } else {
-    echo "Error: " . mysqli_error($conn);
+  echo "Error: " . mysqli_error($conn);
 }
-?>
